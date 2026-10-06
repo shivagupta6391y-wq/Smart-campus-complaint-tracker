@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Campus | Complaint Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">SC</div>
+        <div>
+          <h1>Smart Campus</h1>
+          <span>Complaint Tracker</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-section="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav-item" data-section="complaints">▣ <span>My Complaints</span></button>
+        <button class="nav-item" data-section="submit">＋ <span>New Complaint</span></button>
+        <button class="nav-item" data-section="analytics">◔ <span>Analytics</span></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="student-mini">
+          <div class="avatar">S</div>
+          <div>
+            <strong>Student</strong>
+            <small>Campus User</small>
+          </div>
+        </div>
+        <button id="resetData" class="reset-btn">↻ Reset demo data</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">STUDENT PORTAL</p>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <button class="primary-btn" id="topNewComplaint">＋ New Complaint</button>
+      </header>
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="page-section active">
+        <div class="welcome-card">
+          <div>
+            <p class="eyebrow light">SMART CAMPUS</p>
+            <h3>Good morning, Student 👋</h3>
+            <p>Report campus issues and track their progress from one place.</p>
+          </div>
+          <div class="welcome-mark">✓</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Total Complaints</span>
+            <strong id="totalCount">0</strong>
+            <span class="stat-icon blue">▣</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Pending</span>
+            <strong id="pendingCount">0</strong>
+            <span class="stat-icon orange">◷</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">In Progress</span>
+            <strong id="progressCount">0</strong>
+            <span class="stat-icon purple">↻</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Resolved</span>
+            <strong id="resolvedCount">0</strong>
+            <span class="stat-icon green">✓</span>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Recent Complaints</h3>
+                <p>Your latest reported issues</p>
+              </div>
+              <button class="text-btn" data-section="complaints">View all →</button>
+            </div>
+            <div id="recentComplaints" class="complaint-list"></div>
+          </div>
+
+          <div class="panel priority-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Priority Queue</h3>
+                <p>Issues that need attention first</p>
+              </div>
+              <span class="dsa-badge">DSA</span>
+            </div>
+            <div id="priorityList" class="priority-list"></div>
+            <div class="dsa-note">
+              <strong>Why Priority Queue?</strong>
+              <span>High-priority complaints are placed before lower-priority issues using a Max Heap.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Complaints -->
+      <section id="complaints" class="page-section">
+        <div class="section-intro">
+          <div>
+            <h3>My Complaints</h3>
+            <p>Search, filter and sort your reported issues.</p>
+          </div>
+        </div>
+
+        <div class="toolbar panel">
+          <div class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="text" placeholder="Search by title, category or location..." />
+          </div>
+          <select id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+          <select id="priorityFilter">
+            <option value="all">All Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <select id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="priority">Highest Priority</option>
+            <option value="title">Title A-Z</option>
+          </select>
+        </div>
+
+        <div id="complaintCards" class="complaint-cards"></div>
+      </section>
+
+      <!-- Submit -->
+      <section id="submit" class="page-section">
+        <div class="section-intro">
+          <div>
+            <h3>Submit a New Complaint</h3>
+            <p>Tell us what needs attention on campus.</p>
+          </div>
+        </div>
+
+        <div class="form-panel panel">
+          <form id="complaintForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="title">Complaint Title</label>
+                <input id="title" name="title" required maxlength="70" placeholder="e.g. Wi-Fi not working in Lab 3" />
+              </div>
+              <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                  <option value="">Select category</option>
+                  <option>Internet / Wi-Fi</option>
+                  <option>Electricity</option>
+                  <option>Classroom</option>
+                  <option>Computer Lab</option>
+                  <option>Cleanliness</option>
+                  <option>Water</option>
+                  <option>Library</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input id="location" name="location" required maxlength="60" placeholder="e.g. C-Block, Lab 3" />
+              </div>
+              <div class="form-group">
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority" required>
+                  <option value="High">High — urgent</option>
+                  <option value="Medium" selected>Medium — normal</option>
+                  <option value="Low">Low — can wait</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" name="description" required maxlength="400" placeholder="Describe the issue clearly..."></textarea>
+              <small>Maximum 400 characters</small>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="secondary-btn" data-section="dashboard">Cancel</button>
+              <button type="submit" class="primary-btn">Submit Complaint →</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Analytics -->
+      <section id="analytics" class="page-section">
+        <div class="section-intro">
+          <div>
+            <h3>Complaint Analytics</h3>
+            <p>A simple overview of campus issues using your saved demo data.</p>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Status Overview</h3>
+                <p>Current complaint distribution</p>
+              </div>
+            </div>
+            <div id="statusBars" class="bars"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Category Breakdown</h3>
+                <p>Most reported areas</p>
+              </div>
+            </div>
+            <div id="categoryList" class="category-list"></div>
+          </div>
+        </div>
+
+        <div class="panel interview-panel">
+          <span class="dsa-badge">INTERVIEW READY</span>
+          <h3>DSA used in this project</h3>
+          <div class="interview-grid">
+            <div><strong>Priority Queue</strong><span>Max Heap for urgent complaints.</span></div>
+            <div><strong>Searching</strong><span>String matching for complaint search.</span></div>
+            <div><strong>Sorting</strong><span>Sort by date, title and priority.</span></div>
+            <div><strong>Array / Objects</strong><span>Store and manipulate complaint records.</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
